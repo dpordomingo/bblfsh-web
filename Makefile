@@ -18,7 +18,7 @@ SERVER_URL ?= /api
 BBLFSH_PORT ?= 9432
 API_PORT ?= 9999
 
-$(MAKEFILE):
+$(MAKEFILE): server/asset/asset.go
 	@git clone --quiet $(CI_REPOSITORY) $(CI_FOLDER); \
 	cp $(CI_FOLDER)/$(MAKEFILE) .;
 
@@ -37,6 +37,9 @@ test-frontend: dependencies-frontend
 
 lint: dependencies-frontend
 	$(YARN) lint
+
+server/asset/asset.go:
+	cp server/asset/asset.go.tpl server/asset/asset.go
 
 assets: build dependencies-frontend
 	$(BINDATA) -pkg asset -o ./server/asset/asset.go `find ./build -type d`
